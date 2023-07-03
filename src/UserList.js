@@ -5,8 +5,8 @@ function UserList({ users }) {
         <td>{user.name}</td>
         <td>{user.email}</td>
       </tr>
-    );
-  });
+    )
+  })
 
   return (
     <table>
@@ -16,9 +16,9 @@ function UserList({ users }) {
           <th>Email</th>
         </tr>
       </thead>
-      <tbody>{renderedUsers}</tbody>
+      <tbody data-testid="users">{renderedUsers}</tbody>
     </table>
-  );
+  )
 }
 
-export default UserList;
+export default UserList

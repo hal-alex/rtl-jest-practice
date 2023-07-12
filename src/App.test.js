@@ -25,11 +25,11 @@
 //   expect(enteredEmail).toBeInTheDocument()
 // })
 
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import user from "@testing-library/user-event"
 import App from "./App"
 
-test("can receive a new user and show it on a list", () => {
+test("can receive a new user and show it on a list", async () => {
   render(<App />)
 
   const nameInput = screen.getByRole("textbox", {
@@ -46,9 +46,11 @@ test("can receive a new user and show it on a list", () => {
   user.keyboard("jane@jane.com")
 
   user.click(button)
-
-  const name = screen.getByRole("cell", { name: "jane" })
-  const email = screen.getByRole("cell", { name: "jane@jane.com" })
+  
+  const name = await waitFor(() => screen.getByRole("cell", { name: "jane" }))
+  const email = await waitFor(() =>
+    screen.getByRole("cell", { name: "jane@jane.com" }),
+  )
 
   expect(name).toBeInTheDocument()
   expect(email).toBeInTheDocument()

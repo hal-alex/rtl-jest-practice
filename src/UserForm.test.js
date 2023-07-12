@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react"
+import { render, screen, waitFor } from "@testing-library/react"
 import user from "@testing-library/user-event"
 import UserForm from "./UserForm"
 
@@ -61,6 +61,24 @@ test("it should call onUserAdd when the form is filled out", () => {
 
   expect(mock).toHaveBeenCalled()
   expect(mock).toHaveBeenCalledWith({ name: "alex", email: "email@email.com" })
+})
 
-  //2 - 17
+test("should emppty the form when it is submitted", async () => {
+  render(<UserForm onUserAdd={() => {}}></UserForm>)
+
+  const nameInput = screen.getByRole("textbox", { name: /name/i })
+  const emailInput = screen.getByRole("textbox", { name: /email/i })
+  const button = screen.getByRole("button")
+
+  user.click(nameInput)
+  user.keyboard("test")
+  user.click(emailInput)
+  user.keyboard("test@test.com")
+
+  user.click(button)
+
+  waitFor(() => {
+    expect(nameInput).toHaveValue("")
+    expect(emailInput).toHaveValue("")
+  })
 })
